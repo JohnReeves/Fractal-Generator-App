@@ -2,7 +2,6 @@ from flask import Flask, render_template, jsonify
 
 app = Flask(__name__)
 
-# Default Mandelbrot fractal JSON
 Mandelbrot = {
     "type": "mandelbrot",
     "settings": {
@@ -15,12 +14,12 @@ Mandelbrot = {
         "initial_zx": 0,
         "initial_zy": 0,
         "equations": [
-            "zx_new = zx * zx - zy * zy + cx",
-            "zy_new = 2 * zx * zy + cy"
+            "return zx * zx - zy * zy + cx",
+            "return 2 * zx * zy + cy"
         ],
         "escape_radius": 4
     }
-};
+}
 
 Julia = {
   "type": "julia",
@@ -38,12 +37,12 @@ Julia = {
       "cy": 0.27015
     },
     "equations": [
-      "zx_new = zx * zx - zy * zy + cx",
-      "zy_new = 2 * zx * zy + cy"
+      "return zx * zx - zy * zy + cx",
+      "return 2 * zx * zy + cy"
     ],
     "escape_radius": 4
   }
-};
+}
 
 DEFAULT_FRACTAL = Mandelbrot;
 
