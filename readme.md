@@ -10,7 +10,7 @@ The term fractal was coined by Benoît B. Mandelbrot in 1975, who expanded on ea
 
 Fractals have applications in science, technology, and art. 
 
-In computer graphics, they create realistic landscapes and textures. Telecommunications engineers use fractals to design compact, efficient antennas. Scientists use fractals to model complex systems, such as blood vessel networks or galaxy distributions. Artists use fractals to inspire their art and music, blending mathematics and creativity, and putting the A into STEM.
+Computer scientists use fractals to create realistic landscapes and textures. Telecommunications engineers use fractals to design compact, efficient antennas. Scientists use fractals to model complex systems, such as blood vessel networks or galaxy distributions. Artists use fractals to inspire their art and music, blending mathematics and creativity, and putting the A into STEM.
 
 https://brilliant.org/wiki/fractals/
 
