@@ -1,12 +1,13 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 
 app = Flask(__name__)
 
+# Default Mandelbrot fractal JSON
 Mandelbrot = {
     "type": "mandelbrot",
     "settings": {
-        "width": 800,
-        "height": 800,
+        "width": 700,
+        "height": 700,
         "max_iter": 100,
         "color_scheme": "grayscale"
     },
@@ -24,10 +25,10 @@ Mandelbrot = {
 Julia = {
   "type": "julia",
   "settings": {
-    "width": 800,
-    "height": 800,
+    "width": 700,
+    "height": 700,
     "max_iter": 100,
-    "color_scheme": "rainbow"
+    "color_scheme": "grayscale"
   },
   "formula": {
     "initial_zx": 0,
@@ -44,7 +45,35 @@ Julia = {
   }
 }
 
+Sierpinski = {
+    "type": "sierpinski",
+    "settings": {
+        "width": 800,
+        "height": 800,
+        "iterations": 6,
+        "color": "black"
+    }
+}
+
+KochSnowflake = {
+    "type": "koch",
+    "settings": {
+        "width": 800,
+        "height": 800,
+        "iterations": 5,
+        "color": "blue",
+        "start_length": 300
+    }
+}
+
 DEFAULT_FRACTAL = Mandelbrot;
+# Available fractals
+FRACTALS = {
+    "mandelbrot": Mandelbrot,
+    "julia": Julia,
+    "sierpinski": Sierpinski,
+    "koch": KochSnowflake,
+}
 
 @app.route('/')
 def index():
@@ -52,7 +81,8 @@ def index():
 
 @app.route('/fractal', methods=['GET'])
 def get_fractal():
-    return jsonify(DEFAULT_FRACTAL)
+    fractal_type = request.args.get('type', 'mandelbrot')
+    return jsonify(FRACTALS.get(fractal_type, Mandelbrot))
 
 if __name__ == '__main__':
     app.run(debug=True)
