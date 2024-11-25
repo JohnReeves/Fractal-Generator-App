@@ -6,7 +6,7 @@
     margin-right:auto;
   }
   
-  .vertical-center {
+.vertical-center {
     margin: 0;
     position: absolute;
     top: 50%;
@@ -14,8 +14,8 @@
     transform: translateY(-50%);
   }
   
-  canvas {
+canvas {
     display: block;
     margin: 20px auto;
     border: 1px solid black;
-}
+ }
