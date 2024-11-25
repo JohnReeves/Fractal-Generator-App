@@ -14,7 +14,19 @@
 </head>
 <body>
     <h1 style="text-align: center;">Fractal Generator</h1>
+
+    <select id="fractalType">
+        <option value="mandelbrot">Mandelbrot</option>
+        <option value="julia">Julia</option>
+        <option value="sierpinski">Sierpiński Triangle</option>
+        <option value="koch">Koch Snowflake</option>
+    </select>
+    
+    <button id="renderButton">Render Fractal</button>
+    
+    <div id="parameters"></div>
     <canvas id="fractalCanvas" width="800" height="800"></canvas>
+
     <script src="/static/fractal.js"></script>
 </body>
 </html>
