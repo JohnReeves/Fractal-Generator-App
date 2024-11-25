@@ -1,11 +1,91 @@
+const canvas = document.getElementById('fractalCanvas');
+const ctx = canvas.getContext('2d');
+
 async function fetchFractalSettings() {
     const response = await fetch('/fractal');
     return await response.json();
 }
 
+document.getElementById('renderButton').addEventListener('click', async () => {
+    const type = document.getElementById('fractalType').value;
+    const response = await fetch(`/fractal?type=${type}`);
+    const settings = await response.json();
+    renderFractal(settings);
+});
+
+function drawSierpinski(settings) {
+    const { width, height, iterations, color } = settings.settings;
+
+    canvas.width = width;
+    canvas.height = height;
+    ctx.clearRect(0, 0, width, height);
+
+    function drawTriangle(x1, y1, x2, y2, x3, y3, depth) {
+        if (depth === 0) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.lineTo(x3, y3);
+            ctx.closePath();
+            ctx.fill();
+        } else {
+            const midX1 = (x1 + x2) / 2;
+            const midY1 = (y1 + y2) / 2;
+            const midX2 = (x2 + x3) / 2;
+            const midY2 = (y2 + y3) / 2;
+            const midX3 = (x1 + x3) / 2;
+            const midY3 = (y1 + y3) / 2;
+
+            drawTriangle(x1, y1, midX1, midY1, midX3, midY3, depth - 1);
+            drawTriangle(midX1, midY1, x2, y2, midX2, midY2, depth - 1);
+            drawTriangle(midX3, midY3, midX2, midY2, x3, y3, depth - 1);
+        }
+    }
+
+    drawTriangle(width / 2, 0, 0, height, width, height, iterations);
+}
+
+function drawKoch(settings) {
+    const { width, height, iterations, color, start_length } = settings.settings;
+
+    canvas.width = width;
+    canvas.height = height;
+    ctx.clearRect(0, 0, width, height);
+
+    function drawSegment(x1, y1, x2, y2, depth) {
+        if (depth === 0) {
+            ctx.strokeStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        } else {
+            const dx = x2 - x1, dy = y2 - y1;
+            const xA = x1 + dx / 3, yA = y1 + dy / 3;
+            const xB = x1 + 2 * dx / 3, yB = y1 + 2 * dy / 3;
+            const xC = (xA + xB) / 2 - (yB - yA) * Math.sqrt(3) / 2;
+            const yC = (yA + yB) / 2 + (xB - xA) * Math.sqrt(3) / 2;
+
+            drawSegment(x1, y1, xA, yA, depth - 1);
+            drawSegment(xA, yA, xC, yC, depth - 1);
+            drawSegment(xC, yC, xB, yB, depth - 1);
+            drawSegment(xB, yB, x2, y2, depth - 1);
+        }
+    }
+
+    const startX = (width - start_length) / 2;
+    const startY = height / 2;
+    const endX = startX + start_length;
+
+    drawSegment(startX, startY, endX, startY, iterations);
+    drawSegment(endX, startY, (startX + endX) / 2, startY - (start_length * Math.sqrt(3)) / 2, iterations);
+    drawSegment((startX + endX) / 2, startY - (start_length * Math.sqrt(3)) / 2, startX, startY, iterations);
+}
+
 function drawFractal(settings) {
-    const canvas = document.getElementById('fractalCanvas');
-    const ctx = canvas.getContext('2d');
+    console.log("Settings received:", settings);
+
     const { width, height, max_iter, color_scheme } = settings.settings;
     const { initial_zx, initial_zy, equations, escape_radius } = settings.formula;
 
@@ -21,14 +101,16 @@ function drawFractal(settings) {
     canvas.height = height;
 
     // Functions for equations
+    console.log("Equation for zx:", equations[0]);
+    console.log("Equation for zy:", equations[1]);
     const zxEquation = new Function('zx', 'zy', 'cx', 'cy', equations[0]);
     const zyEquation = new Function('zx', 'zy', 'cx', 'cy', equations[1]);
-
 
     for (let x = 0; x < width; x++) {
         for (let y = 0; y < height; y++) {
             const cx = settings.formula.constants?.cx || (x - width / 2) / (width / 4);
             const cy = settings.formula.constants?.cy || (y - height / 2) / (height / 4);   
+
             let zx = initial_zx, zy = initial_zy;
             let iter = 0;
 
@@ -49,4 +131,23 @@ function drawFractal(settings) {
     }   
 }
 
-fetchFractalSettings().then(drawFractal);
+function renderFractal(settings) {
+    switch (settings.type) {
+        case 'mandelbrot':
+            drawFractal(settings);
+            break;
+        case 'julia':
+            drawFractal(settings);
+            break;
+        case 'sierpinski':
+            drawSierpinski(settings);
+            break;
+        case 'koch':
+            drawKoch(settings);
+            break;
+        default:
+            console.error("Unknown fractal type:", settings.type);
+    }
+}
+
+fetchFractalSettings().then(renderFractal);
