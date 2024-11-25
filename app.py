@@ -2,7 +2,6 @@ from flask import Flask, render_template, jsonify, request
 
 app = Flask(__name__)
 
-# Default Mandelbrot fractal JSON
 Mandelbrot = {
     "type": "mandelbrot",
     "settings": {
@@ -67,7 +66,6 @@ KochSnowflake = {
 }
 
 DEFAULT_FRACTAL = Mandelbrot;
-# Available fractals
 FRACTALS = {
     "mandelbrot": Mandelbrot,
     "julia": Julia,
