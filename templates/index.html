@@ -4,28 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fractal Generator</title>
-    <style>
-        canvas {
-            display: block;
-            margin: 20px auto;
-            border: 1px solid black;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1 style="text-align: center;">Fractal Generator</h1>
 
-    <select id="fractalType">
-        <option value="mandelbrot">Mandelbrot</option>
-        <option value="julia">Julia</option>
-        <option value="sierpinski">Sierpiński Triangle</option>
-        <option value="koch">Koch Snowflake</option>
-    </select>
+    <div class="container">
+        <div class="vertical-center">
+            <select id="fractalType">
+                <option value="mandelbrot">Mandelbrot</option>
+                <option value="julia">Julia</option>
+                <option value="sierpinski">Sierpiński Triangle</option>
+                <option value="koch">Koch Snowflake</option>
+            </select>
     
-    <button id="renderButton">Render Fractal</button>
-    
-    <div id="parameters"></div>
-    <canvas id="fractalCanvas" width="800" height="800"></canvas>
+            <button id="renderButton">Render Fractal</button>
+        </div>
+        <div id="parameters"></div>
+        <canvas id="fractalCanvas" width="800" height="800"></canvas>
+    </div>
 
     <script src="/static/fractal.js"></script>
 </body>
