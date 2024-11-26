@@ -1,21 +1,103 @@
-.container { 
-    height: 1000px;
-    width:500px;
-    position: absolute;
-    margin-left:auto;
-    margin-right:auto;
-  }
-  
-.vertical-center {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-  }
-  
-canvas {
-    display: block;
-    margin: 20px auto;
-    border: 1px solid black;
- }
+/* style.css */
+
+/* Material Design Colors, of course :-) */
+:root {
+  --primary-color: #6200ea; /* Deep Purple */
+  --secondary-color: #03dac6; /* Teal */
+  --background-color: #f5f5f5; /* Light Grey */
+  --surface-color: #ffffff; /* White */
+  --error-color: #b00020; /* Red */
+  --on-primary-color: #ffffff; /* White */
+  --on-secondary-color: #000000; /* Black */
+  --text-color: #000000; /* Black */
+  --muted-text-color: #757575; /* Grey */
+}
+
+/* General body styling */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+}
+
+/* Card style for the fractal interface */
+.card {
+  background-color: var(--surface-color);
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  margin: 16px;
+  width: 90%;
+  max-width: 800px;
+}
+
+/* Buttons */
+button {
+  background-color: var(--primary-color);
+  color: var(--on-primary-color);
+  border: none;
+  border-radius: 4px;
+  padding: 10px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 8px;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #3700b3; /* Darker purple */
+}
+
+button:active {
+  background-color: #03dac6; /* Secondary color */
+}
+
+/* Inputs */
+input[type="number"], input[type="text"], select {
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  border: 1px solid var(--muted-text-color);
+  border-radius: 4px;
+  padding: 8px;
+  margin: 8px 0;
+  font-size: 16px;
+  width: 100%;
+}
+
+input[type="number"]:focus, input[type="text"]:focus, select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 4px var(--primary-color);
+}
+
+/* Canvas */
+#fractalCanvas {
+  margin: 16px auto;
+  display: block;
+  background-color: var(--surface-color);
+  border: 2px solid var(--muted-text-color);
+  border-radius: 8px;
+}
+
+/* Headers */
+h1, h2, h3 {
+  color: var(--primary-color);
+  margin: 8px 0;
+  text-align: center;
+}
+
+/* Save/Load Section */
+#saveLoadContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 16px 0;
+}
