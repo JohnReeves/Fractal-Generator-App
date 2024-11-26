@@ -10,7 +10,42 @@ document.getElementById('renderButton').addEventListener('click', async () => {
     const type = document.getElementById('fractalType').value;
     const response = await fetch(`/fractal?type=${type}`);
     const settings = await response.json();
+    console.log("response=",response, " | settings=",settings)
     renderFractal(settings);
+});
+
+document.getElementById("saveSettings").addEventListener("click", async () => {
+    const type = document.getElementById("fractalType").value;
+    const settings = collectParameters(type);
+
+    const response = await fetch('/save_settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, settings })
+    });
+
+    const result = await response.json();
+    alert(result.message);
+});
+
+document.getElementById("loadSettings").addEventListener("click", async () => {
+    const response = await fetch('/load_settings');
+    if (response.ok) {
+        const data = await response.json();
+        const type = data.type;
+        generateParameterInputs(type);
+
+        Object.entries(data.settings).forEach(([id, value]) => {
+            const input = document.getElementById(id);
+            if (input) input.value = value;
+        });
+
+        document.getElementById("fractalType").value = type;
+        alert("Settings loaded successfully!");
+    } else {
+        const error = await response.json();
+        alert(error.message);
+    }
 });
 
 function drawSierpinski(settings) {
