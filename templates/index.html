@@ -4,27 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fractal Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1 style="text-align: center;">Fractal Generator</h1>
 
-    <div class="container">
-        <div class="vertical-center">
-            <select id="fractalType">
-                <option value="mandelbrot">Mandelbrot</option>
-                <option value="julia">Julia</option>
-                <option value="sierpinski">Sierpiński Triangle</option>
-                <option value="koch">Koch Snowflake</option>
-            </select>
+    <div class="card">
+        <h1>Fractal Generator</h1>
+    
+        <!-- Choose your favourite fractal -->
+        <select id="fractalType">
+            <option value="mandelbrot">Mandelbrot</option>
+            <option value="julia">Julia</option>
+            <option value="sierpinski">Sierpiński Triangle</option>
+            <option value="koch">Koch Snowflake</option>
+        </select>
+        <button id="renderButton">Render Fractal</button>
 
+        <!-- Render the output on an HTML5 canvas -->
+        <canvas id="fractalCanvas" width="800" height="800"></canvas>
+
+        <!-- Save your favourites for next time -->
+        <div id="saveLoadContainer">
             <button id="saveSettings">Save Settings</button>
             <button id="loadSettings">Load Settings</button>
-    
-            <button id="renderButton">Render Fractal</button>
         </div>
-        <div id="parameters"></div>
-        <canvas id="fractalCanvas" width="800" height="800"></canvas>
+
+        <div id="parameterInputs">
+            <!-- Dynamically generated inputs will appear here -->
+        </div>
     </div>
 
     <script src="/static/fractal.js"></script>
