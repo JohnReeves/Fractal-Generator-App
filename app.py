@@ -1,77 +1,14 @@
 from flask import Flask, render_template, jsonify, request
+import json
+import os
 
 app = Flask(__name__)
 
-Mandelbrot = {
-    "type": "mandelbrot",
-    "settings": {
-        "width": 700,
-        "height": 700,
-        "max_iter": 100,
-        "color_scheme": "grayscale"
-    },
-    "formula": {
-        "initial_zx": 0,
-        "initial_zy": 0,
-        "equations": [
-            "return zx * zx - zy * zy + cx",
-            "return 2 * zx * zy + cy"
-        ],
-        "escape_radius": 4
-    }
-}
+# Load fractals from JSON file
+with open('fractals.json', 'r') as f:
+    FRACTALS = json.load(f)
 
-Julia = {
-  "type": "julia",
-  "settings": {
-    "width": 700,
-    "height": 700,
-    "max_iter": 100,
-    "color_scheme": "grayscale"
-  },
-  "formula": {
-    "initial_zx": 0,
-    "initial_zy": 0,
-    "constants": {
-      "cx": -0.7,
-      "cy": 0.27015
-    },
-    "equations": [
-      "return zx * zx - zy * zy + cx",
-      "return 2 * zx * zy + cy"
-    ],
-    "escape_radius": 4
-  }
-}
-
-Sierpinski = {
-    "type": "sierpinski",
-    "settings": {
-        "width": 800,
-        "height": 800,
-        "iterations": 6,
-        "color": "black"
-    }
-}
-
-KochSnowflake = {
-    "type": "koch",
-    "settings": {
-        "width": 800,
-        "height": 800,
-        "iterations": 5,
-        "color": "blue",
-        "start_length": 300
-    }
-}
-
-DEFAULT_FRACTAL = Mandelbrot;
-FRACTALS = {
-    "mandelbrot": Mandelbrot,
-    "julia": Julia,
-    "sierpinski": Sierpinski,
-    "koch": KochSnowflake,
-}
+USER_SETTINGS_FILE = 'user_settings.json'
 
 @app.route('/')
 def index():
@@ -80,7 +17,23 @@ def index():
 @app.route('/fractal', methods=['GET'])
 def get_fractal():
     fractal_type = request.args.get('type', 'mandelbrot')
-    return jsonify(FRACTALS.get(fractal_type, Mandelbrot))
+    fractal = FRACTALS.get(fractal_type, FRACTALS['mandelbrot'])
+    return jsonify(fractal)
+
+@app.route('/save_settings', methods=['POST'])
+def save_settings():
+    data = request.json
+    with open(USER_SETTINGS_FILE, 'w') as f:
+        json.dump(data, f)
+    return jsonify({"status": "success", "message": "Settings saved successfully!"})
+
+@app.route('/load_settings', methods=['GET'])
+def load_settings():
+    if os.path.exists(USER_SETTINGS_FILE):
+        with open(USER_SETTINGS_FILE, 'r') as f:
+            settings = json.load(f)
+        return jsonify(settings)
+    return jsonify({"status": "error", "message": "No saved settings found."}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)
