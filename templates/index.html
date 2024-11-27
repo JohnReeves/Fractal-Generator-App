@@ -23,7 +23,11 @@
 
         <!-- Render the output on an HTML5 canvas -->
         <canvas id="fractalCanvas" width="800" height="800"></canvas>
-
+        <div id="sliderContainer">
+            <label for="iterationSlider">Iterations: <span id="iterationValue">1</span></label>
+            <input type="range" id="iterationSlider" min="1" max="100" value="1">
+        </div>
+    
         <!-- Save your favourites for next time -->
         <div id="saveLoadContainer">
             <button id="saveSettings">Save Settings</button>
