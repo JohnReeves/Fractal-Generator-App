@@ -1,5 +1,7 @@
 const canvas = document.getElementById('fractalCanvas');
 const ctx = canvas.getContext('2d');
+const iterationSlider = document.getElementById('iterationSlider');
+const iterationValue = document.getElementById('iterationValue');
 
 async function fetchFractalSettings() {
     const response = await fetch('/fractal');
@@ -118,10 +120,10 @@ function drawKoch(settings) {
     drawSegment((startX + endX) / 2, startY - (start_length * Math.sqrt(3)) / 2, startX, startY, iterations);
 }
 
-function drawFractal(settings) {
+function drawFractal(settings, max_iter) {
     console.log("Settings received:", settings);
 
-    const { width, height, max_iter, color_scheme } = settings.settings;
+    const { width, height, color_scheme } = settings.settings;
     const { initial_zx, initial_zy, equations, escape_radius } = settings.formula;
 
     if (!width || !height || !equations || equations.length < 2) {
@@ -185,4 +187,14 @@ function renderFractal(settings) {
     }
 }
 
-fetchFractalSettings().then(renderFractal);
+// Event listener for the slider
+iterationSlider.addEventListener('input', async () => {
+    const maxIter = parseInt(iterationSlider.value, 10);
+    iterationValue.textContent = maxIter; // Update displayed value
+    const fractalSettings = await fetchFractalSettings();
+    drawFractal(fractalSettings, maxIter);
+});
+
+// Initial render
+fetchFractalSettings().then(settings => drawFractal(settings, parseInt(iterationSlider.value, 10)));
+// fetchFractalSettings().then(renderFractal);
